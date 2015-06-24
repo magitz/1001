@@ -204,13 +204,13 @@ while char_count <= char_len :
 					trans_bin_reduced_dict[key]=str(trans_bin_reduced_dict[key]) + "0" #add a 1
 					trans_bin_reduced_csv_dict[key]=str(trans_bin_reduced_csv_dict[key]) + ",0"
 			
-			out_bin_state= trans_bin_dict[outgroup][(char_count-1):char_count].upper()	#Get the binary state of the outgroup at this character
-			
-			if (out_bin_state in ambig_chars) or (tax_char in ambig_chars) : #if outgroup or current taxon character is in the ambiguous list
+			if (out_char in ambig_chars) or (tax_char in ambig_chars) : #if outgroup or current taxon character is in the ambiguous list
 				trans_polarized_dict[key]=str(trans_polarized_dict[key]) + "?"
 				trans_polarized_csv_dict[key]=str(trans_polarized_csv_dict[key]) + ",?"
-				#No need to do anything with reduced matrix since outgroup is ambiguous, so character will be excluded.
-			elif tax_char == out_bin_state :		#polarize for outgroup taxon: if = outgroup, then 0, else 1
+				if (len(chars) > 1) and (out_char not in ambig_chars) :	#if position is not invariant, and outgroup isn't ambig add to reduced dataset.
+					trans_polarized_reduced_dict[key]=str(trans_polarized_reduced_dict[key]) + "?" #add a ?
+					trans_polarized_reduced_csv_dict[key]=str(trans_polarized_reduced_csv_dict[key]) + ",?"	
+			elif tax_char == out_char :		#polarize for outgroup taxon: if = outgroup, then 0, else 1
 				trans_polarized_dict[key]=str(trans_polarized_dict[key]) + "0"
 				trans_polarized_csv_dict[key]=str(trans_polarized_csv_dict[key]) + ",0"
 				if (len(chars) > 1)  :	#if position is not invariant, add to reduced dataset.
